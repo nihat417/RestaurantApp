@@ -1,0 +1,19 @@
+﻿<Window x:Class="RestaurantApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="TableApp" Height="600" Width="1000" Background="#F8F9FA">
+    <Grid>
+        <!-- Верхняя панель -->
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Background="#FFFFFF" Height="50" Margin="10" HorizontalAlignment="Stretch">
+            <TextBlock Text="Huseyin" FontSize="24" FontWeight="Bold" VerticalAlignment="Center" Margin="10"/>
+            <TextBlock Text="Çarşamba, 29 Kasım, 14.15" VerticalAlignment="Center" Margin="10"/>
+            <TextBox x:Name="SearchBox" Width="200" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Right" TextChanged="SearchBox_TextChanged" />
+        </StackPanel>
+
+        <!-- Панель с группами столов -->
+        <WrapPanel x:Name="TableGroupPanel" Margin="10,60,10,10" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+    </Grid>
+</Window>
