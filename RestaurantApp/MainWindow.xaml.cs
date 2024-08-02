@@ -1,9 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using MaterialDesignThemes.Wpf;
 using Newtonsoft.Json.Linq;
 using RestSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -61,9 +58,7 @@ namespace RestaurantApp
                 }
             }
             else
-            {
                 MessageBox.Show($"Error: {response.ErrorMessage}");
-            }
         }
 
         private void UpdateTableGroupsDisplay()
@@ -76,7 +71,6 @@ namespace RestaurantApp
                     Margin = new Thickness(10),
                     Orientation = Orientation.Vertical
                 };
-
                 
 
                 var groupHeader = new Button
@@ -95,25 +89,6 @@ namespace RestaurantApp
                 };
 
                 groupHeader.Click += GroupHeader_Click;
-
-                async void GroupHeader_Click(object sender, RoutedEventArgs e)
-                {
-                    var clickedButton = (Button)sender;
-                    var tableGroupId = _tableGroups.FirstOrDefault(g => g.Name == clickedButton.Content.ToString())?.Id;
-
-                    if (tableGroupId != null)
-                    {
-                        if (_selectedButton != null)
-                        {
-                            _selectedButton.Foreground = Brushes.White;
-                        }
-                        clickedButton.Foreground = Brushes.Aqua;
-                        _selectedButton = clickedButton;
-
-                        await LoadTableDataForGroup(tableGroupId.Value);
-                    }
-                }
-
 
                 var tablePanel = new StackPanel
                 {
@@ -156,6 +131,23 @@ namespace RestaurantApp
             }
         }
 
+        private async void GroupHeader_Click(object sender, RoutedEventArgs e)
+        {
+            var clickedButton = (Button)sender;
+            var tableGroupId = _tableGroups.FirstOrDefault(g => g.Name == clickedButton.Content.ToString())?.Id;
+
+            if (tableGroupId != null)
+            {
+                if (_selectedButton != null)
+                    _selectedButton.Foreground = Brushes.White;
+
+                clickedButton.Foreground = Brushes.Aqua;
+                _selectedButton = clickedButton;
+
+                await LoadTableDataForGroup(tableGroupId.Value);
+            }
+        }
+
         private async Task LoadTableDataForGroup(int groupId)
         {
             var client = new RestClient(ApiUrl);
@@ -182,22 +174,16 @@ namespace RestaurantApp
 
                     foreach (var item in data)
                     {
-                        // Извлекаем таблицы из данных
                         var tablesArray = item["tables"]?.ToObject<List<Table>>();
                         if (tablesArray != null)
-                        {
                             tables.AddRange(tablesArray);
-                        }
                     }
 
-                    // Теперь tables содержит только необходимые данные
                     UpdateWrapPanelContent(tables);
                 }
             }
             else
-            {
                 MessageBox.Show($"Error: {response.ErrorMessage}");
-            }
         }
 
 
@@ -206,18 +192,272 @@ namespace RestaurantApp
             wrapPanelContent.Children.Clear();
             foreach (var table in tables)
             {
-                var tableItem = new TextBlock
-                {
-                    Text = table.Name,
-                    FontSize = 18,
-                    Margin = new Thickness(10),
-                    Padding = new Thickness(10),
-                    Background = GetTableColor(table.TableStatusId),
-                    Foreground = Brushes.Black,
-                    Width = 150 
-                };
 
-                wrapPanelContent.Children.Add(tableItem);
+                if(table.TableStatusId == 1)
+                {
+                    var border = new Border
+                    {
+                        Width = 300,
+                        Height = 200,
+                        CornerRadius = new CornerRadius(20),
+                        Padding = new Thickness(10),
+                        Margin = new Thickness(10),
+                        Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#c6cbcc"))
+                    };
+
+                    var grid = new Grid();
+                    grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                    grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+                    grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+
+                    var textBlockTitle = new TextBlock
+                    {
+                        Text = table.Name,
+                        FontSize = 24,
+                        FontWeight = FontWeights.Bold,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        Foreground = Brushes.White
+                    };
+                    Grid.SetRow(textBlockTitle, 0);
+                    Grid.SetColumn(textBlockTitle, 0);
+                    grid.Children.Add(textBlockTitle);
+
+                    var stackPanel = new StackPanel
+                    {
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        VerticalAlignment = VerticalAlignment.Center
+                    };
+
+                    var textBlockReserve = new TextBlock
+                    {
+                        Text = "Empty",
+                        FontSize = 16,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        Foreground = Brushes.White
+                    };
+                    stackPanel.Children.Add(textBlockReserve);
+
+                    Grid.SetRow(stackPanel, 1);
+                    Grid.SetColumn(stackPanel, 0);
+                    grid.Children.Add(stackPanel);
+
+                    border.Child = grid;
+                    wrapPanelContent.Children.Add(border);
+                }
+                else if (table.TableStatusId == 2)
+                {
+                    var border2 = new Border
+                    {
+                        Width = 300,
+                        Height = 200,
+                        CornerRadius = new CornerRadius(20),
+                        Padding = new Thickness(10),
+                        Margin = new Thickness(10),
+                        Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#A9D7E5"))
+                    };
+
+                    var grid2 = new Grid();
+                    grid2.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+                    grid2.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                    grid2.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+
+                    grid2.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+                    grid2.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                    grid2.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+
+                    var stackpanel_1 = new StackPanel
+                    {
+                        Orientation = Orientation.Horizontal,
+                        VerticalAlignment = VerticalAlignment.Center,
+                    };
+
+                    var icon = new PackIcon
+                    {
+                        Kind = PackIconKind.Account,
+                        Width = 20,
+                        Height = 20,
+                        Margin = new Thickness(0, 0, 5, 0),
+                    };
+
+                    stackpanel_1.Children.Add(icon);
+
+                    var textBlockReserve_1 = new TextBlock
+                    {
+                        Text = "3",
+                        FontSize = 16,
+                        VerticalAlignment = VerticalAlignment.Center,
+                    };
+                    stackpanel_1.Children.Add(textBlockReserve_1);
+
+                    Grid.SetRow(stackpanel_1, 0);
+                    Grid.SetColumn(stackpanel_1, 0);
+                    grid2.Children.Add(stackpanel_1);
+
+                    var stackpanel_2 = new StackPanel
+                    {
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        VerticalAlignment = VerticalAlignment.Center,
+                    };
+
+                    var border_3 = new Border
+                    {
+                        CornerRadius = new CornerRadius(10),
+                        Background = Brushes.White,
+                        Width = 100,
+                        Height = 20,
+                    };
+
+                    stackpanel_2.Children.Add(border_3);
+
+                    Grid.SetRow(stackpanel_2, 0);
+                    Grid.SetColumn(stackpanel_2, 1);
+                    grid2.Children.Add(stackpanel_2);
+
+                    var stackpanel_3 = new StackPanel
+                    {
+                        HorizontalAlignment = HorizontalAlignment.Right,
+                        VerticalAlignment = VerticalAlignment.Center,
+                    };
+
+                    var textBlockReserve_2 = new TextBlock
+                    {
+                        Text = "14:50",
+                        FontSize = 16,
+                        HorizontalAlignment = HorizontalAlignment.Right,
+                    };
+
+                    stackpanel_3.Children.Add(textBlockReserve_2);
+
+                    var textBlockReserve_3 = new TextBlock
+                    {
+                        Text = "19 dk",
+                        FontSize = 12,
+                        HorizontalAlignment = HorizontalAlignment.Right,
+                    };
+
+                    stackpanel_3.Children.Add(textBlockReserve_3);
+
+                    Grid.SetRow(stackpanel_3, 0);
+                    Grid.SetColumn(stackpanel_3, 2);
+                    grid2.Children.Add(stackpanel_3);
+
+                    var textBlockReserve_4 = new TextBlock
+                    {
+                        Text = table.Name,
+                        FontSize = 24,
+                        FontWeight = FontWeights.Bold,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                    };
+
+                    Grid.SetRow(textBlockReserve_4, 1);
+                    Grid.SetColumn(textBlockReserve_4, 0);
+                    Grid.SetColumnSpan(textBlockReserve_4, 3);
+                    grid2.Children.Add(textBlockReserve_4);
+
+                    var textBlockReverse_5 = new TextBlock
+                    {
+                        Text = "₺500",
+                        FontSize = 16,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        HorizontalAlignment = HorizontalAlignment.Center
+                    };
+
+                    Grid.SetRow(textBlockReverse_5, 2);
+                    Grid.SetColumn(textBlockReverse_5, 0);
+                    Grid.SetColumnSpan(textBlockReverse_5, 3);
+                    grid2.Children.Add(textBlockReverse_5);
+
+                    border2.Child = grid2;
+                    wrapPanelContent.Children.Add(border2);
+                }
+                else if (table.TableStatusId == 3)
+                {
+                    var border = new Border
+                    {
+                        Width = 300,
+                        Height = 200,
+                        CornerRadius = new CornerRadius(20),
+                        Padding = new Thickness(10),
+                        Margin = new Thickness(10),
+                        Background = new LinearGradientBrush
+                        {
+                            StartPoint = new Point(0, 0),
+                            EndPoint = new Point(1, 1),
+                            GradientStops ={new GradientStop(Colors.Orange, 0.0),new GradientStop(Colors.DarkOrange, 1.0)}
+                        }
+                    };
+
+                    var grid = new Grid();
+                    grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                    grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+                    grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+
+                    var textBlockTitle = new TextBlock
+                    {
+                        Text = table.Name,
+                        FontSize = 24,
+                        FontWeight = FontWeights.Bold,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        Foreground = Brushes.White
+                    };
+                    Grid.SetRow(textBlockTitle, 0);
+                    Grid.SetColumn(textBlockTitle, 0);
+                    grid.Children.Add(textBlockTitle);
+
+                    var stackPanel = new StackPanel
+                    {
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        VerticalAlignment = VerticalAlignment.Center
+                    };
+
+                    var icon = new PackIcon
+                    {
+                        Kind = PackIconKind.ClockOutline,
+                        Width = 24,
+                        Height = 24,
+                        Margin = new Thickness(20, 0, 20, 5),
+                        Foreground = Brushes.White
+                    };
+                    stackPanel.Children.Add(icon);
+
+                    var textBlockReserve = new TextBlock
+                    {
+                        Text = "Rezerve",
+                        FontSize = 16,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        Foreground = Brushes.White
+                    };
+                    stackPanel.Children.Add(textBlockReserve);
+
+                    Grid.SetRow(stackPanel, 1);
+                    Grid.SetColumn(stackPanel, 0);
+                    grid.Children.Add(stackPanel);
+
+                    border.Child = grid;
+                    wrapPanelContent.Children.Add(border);
+                }
+                else
+                {
+                    var tableItem = new TextBlock
+                    {
+                        Text = table.Name,
+                        FontSize = 18,
+                        Margin = new Thickness(10),
+                        Padding = new Thickness(10),
+                        Background = GetTableColor(table.TableStatusId),
+                        Foreground = Brushes.Black,
+                        Width = 150
+                    };
+
+                    wrapPanelContent.Children.Add(tableItem);
+                }
             }
         }
 
