@@ -11,6 +11,7 @@ namespace RestaurantApp
     public partial class MainWindow : Window
     {
         private Button _selectedButton;
+        private ProgressBar _progressBar;
         private DispatcherTimer _timer;
         private const string ApiUrl = "http://185.202.223.38:16720";
         private List<TableGroup> _tableGroups;
@@ -144,7 +145,37 @@ namespace RestaurantApp
                 clickedButton.Foreground = Brushes.Aqua;
                 _selectedButton = clickedButton;
 
+                ShowProgressBar();
+                await Task.Delay(2000);
                 await LoadTableDataForGroup(tableGroupId.Value);
+                HideProgressBar();
+            }
+        }
+
+        private void ShowProgressBar()
+        {
+            wrapPanelContent.Children.Clear();
+
+            _progressBar = new ProgressBar
+            {
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                Margin = new Thickness(400, 100, 0, 0),
+                Width = 300,
+                IsIndeterminate = true,
+                Style = (Style)FindResource("MaterialDesignCircularProgressBar"),
+                Value = 0
+            };
+
+            wrapPanelContent.Children.Add(_progressBar);
+        }
+
+        private void HideProgressBar()
+        {
+            if (_progressBar != null)
+            {
+                wrapPanelContent.Children.Remove(_progressBar);
+                _progressBar = null;
             }
         }
 
@@ -653,8 +684,6 @@ namespace RestaurantApp
                 _ => Brushes.Gray
             };
         }
-
-        
 
         private void UpdateTime(object sender, EventArgs e) => datetimeDisplay.Text = DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm");
 
