@@ -3,6 +3,9 @@
     public int Id { get; set; }
     public string Name { get; set; }
     public string LockedUser { get; set; }
+    public string InsertDate { get; set; }
+    public string SumTotal{ get; set; }
+    public string UserInsertName { get; set; }
     public int TableNumber { get; set; }
     public int IdDepartment { get; set; }
     public int TableStatusId { get; set; }

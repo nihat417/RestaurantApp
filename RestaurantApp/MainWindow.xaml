@@ -57,6 +57,7 @@
             <Grid Grid.Row="1">
                 <ScrollViewer>
                     <WrapPanel x:Name="wrapPanelContent">
+                        
                     </WrapPanel>
                 </ScrollViewer>
             </Grid>

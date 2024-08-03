@@ -286,7 +286,7 @@ namespace RestaurantApp
 
                     var textBlockReserve_1 = new TextBlock
                     {
-                        Text = "3",
+                        Text = table.PersonCount.ToString(),
                         FontSize = 16,
                         VerticalAlignment = VerticalAlignment.Center,
                     };
@@ -324,7 +324,7 @@ namespace RestaurantApp
 
                     var textBlockReserve_2 = new TextBlock
                     {
-                        Text = "14:50",
+                        Text = table.InsertDate,
                         FontSize = 16,
                         HorizontalAlignment = HorizontalAlignment.Right,
                     };
@@ -333,7 +333,7 @@ namespace RestaurantApp
 
                     var textBlockReserve_3 = new TextBlock
                     {
-                        Text = "19 dk",
+                        Text = table.PastMins.ToString(),
                         FontSize = 12,
                         HorizontalAlignment = HorizontalAlignment.Right,
                     };
@@ -360,7 +360,7 @@ namespace RestaurantApp
 
                     var textBlockReverse_5 = new TextBlock
                     {
-                        Text = "₺500",
+                        Text = "₺"+table.SumTotal,
                         FontSize = 16,
                         VerticalAlignment = VerticalAlignment.Center,
                         HorizontalAlignment = HorizontalAlignment.Center
@@ -443,6 +443,165 @@ namespace RestaurantApp
                     border.Child = grid;
                     wrapPanelContent.Children.Add(border);
                 }
+                else if (table.TableStatusId == 4)
+                {
+                    var border4 = new Border
+                    {
+                        Width = 300,
+                        Height = 200,
+                        CornerRadius = new CornerRadius(20),
+                        Padding = new Thickness(10),
+                        Margin = new Thickness(10),
+                        Background = new LinearGradientBrush
+                        {
+                            StartPoint = new Point(0, 0),
+                            EndPoint = new Point(1, 1),
+                            GradientStops ={new GradientStop((Color)ColorConverter.ConvertFromString("#2986cc"), 0.0),new GradientStop((Color)ColorConverter.ConvertFromString("#206ba3"), 1.0)}
+                        }
+                    };
+
+                    var grid4 = new Grid();
+                    grid4.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+                    grid4.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                    grid4.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+
+                    grid4.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+                    grid4.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                    grid4.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+
+                    var stackpanel_1 = new StackPanel
+                    {
+                        Orientation = Orientation.Horizontal,
+                        VerticalAlignment = VerticalAlignment.Center,
+                    };
+
+                    var icon = new PackIcon
+                    {
+                        Kind = PackIconKind.Account,
+                        Width = 20,
+                        Height = 20,
+                        Margin = new Thickness(0, 0, 5, 0),
+                    };
+
+                    stackpanel_1.Children.Add(icon);
+
+                    var textBlockReserve_1 = new TextBlock
+                    {
+                        Text = table.PersonCount.ToString(),
+                        FontSize = 16,
+                        VerticalAlignment = VerticalAlignment.Center,
+                    };
+                    stackpanel_1.Children.Add(textBlockReserve_1);
+
+                    Grid.SetRow(stackpanel_1, 0);
+                    Grid.SetColumn(stackpanel_1, 0);
+                    grid4.Children.Add(stackpanel_1);
+
+                    var stackpanel_2 = new StackPanel
+                    {
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        VerticalAlignment = VerticalAlignment.Center,
+                    };
+
+                    var border_3 = new Border
+                    {
+                        CornerRadius = new CornerRadius(10),
+                        Background = Brushes.White,
+                        Width = 100,
+                        Height = 20,
+                    };
+
+                    var textBlockInBorder = new TextBlock
+                    {
+                        FontWeight = FontWeights.SemiBold,
+                        FontSize = 16,
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        Text = table.UserInsertName
+                    };
+                    border_3.Child = textBlockInBorder;
+                    stackpanel_2.Children.Add(border_3);
+
+                    Grid.SetRow(stackpanel_2, 0);
+                    Grid.SetColumn(stackpanel_2, 1);
+                    grid4.Children.Add(stackpanel_2);
+
+                    var stackpanel_3 = new StackPanel
+                    {
+                        HorizontalAlignment = HorizontalAlignment.Right,
+                        VerticalAlignment = VerticalAlignment.Center,
+                    };
+
+                    var textBlockReserve_2 = new TextBlock
+                    {
+                        Text = table.InsertDate,
+                        FontSize = 16,
+                        HorizontalAlignment = HorizontalAlignment.Right,
+                    };
+
+                    stackpanel_3.Children.Add(textBlockReserve_2);
+
+                    var textBlockReserve_3 = new TextBlock
+                    {
+                        Text = table.PastMins.ToString(),
+                        FontSize = 12,
+                        HorizontalAlignment = HorizontalAlignment.Right,
+                    };
+
+                    stackpanel_3.Children.Add(textBlockReserve_3);
+
+                    Grid.SetRow(stackpanel_3, 0);
+                    Grid.SetColumn(stackpanel_3, 2);
+                    grid4.Children.Add(stackpanel_3);
+
+                    var stackpanel_4 = new StackPanel
+                    {
+                        Orientation = Orientation.Horizontal,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                    };
+
+                    var lockIcon = new PackIcon
+                    {
+                        Kind = PackIconKind.Lock,
+                        Width = 20,
+                        Height = 20,
+                        Margin = new Thickness(0, 7, 5, 0),
+                    };
+
+                    stackpanel_4.Children.Add(lockIcon);
+
+                    var textBlockReserve_4 = new TextBlock
+                    {
+                        Text = table.Name,
+                        FontSize = 24,
+                        FontWeight = FontWeights.Bold,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                    };
+                    stackpanel_4.Children.Add(textBlockReserve_4);
+
+                    Grid.SetRow(stackpanel_4, 1);
+                    Grid.SetColumn(stackpanel_4, 0);
+                    Grid.SetColumnSpan(stackpanel_4, 3);
+                    grid4.Children.Add(stackpanel_4);
+
+                    var textBlockReverse_5 = new TextBlock
+                    {
+                        Text = "₺"+table.SumTotal,
+                        FontSize = 16,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        HorizontalAlignment = HorizontalAlignment.Center
+                    };
+
+                    Grid.SetRow(textBlockReverse_5, 2);
+                    Grid.SetColumn(textBlockReverse_5, 0);
+                    Grid.SetColumnSpan(textBlockReverse_5, 3);
+                    grid4.Children.Add(textBlockReverse_5);
+
+                    border4.Child = grid4;
+                    wrapPanelContent.Children.Add(border4);
+                }
+
                 else
                 {
                     var tableItem = new TextBlock
