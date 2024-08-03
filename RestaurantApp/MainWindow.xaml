@@ -40,11 +40,11 @@
                 <Button Grid.Column="2"  Click="ScrollRight" IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Style="{StaticResource MaterialDesignIconButton}" ToolTip="MaterialDesignIconButton">
                     <materialDesign:PackIcon Kind="ArrowRight" />
                 </Button>
-                <TextBox Name="logintextbox" Grid.Column="3"
+                <TextBox x:Name="SearchBox" TextChanged="SearchBox_TextChanged" Grid.Column="3"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
                     materialDesign:HintAssist.Hint="Search"
                     VerticalAlignment="Center"
-                         Margin="10"
+                    Margin="10" 
                     materialDesign:HintAssist.Foreground="Black"
                     materialDesign:TextFieldAssist.UnderlineBrush="Black"
                     Foreground="Black"

@@ -186,7 +186,7 @@ namespace RestaurantApp
                 MessageBox.Show($"Error: {response.ErrorMessage}");
         }
 
-
+        #region Wrappanel Updade
         private void UpdateWrapPanelContent(List<Table> tables)
         {
             wrapPanelContent.Children.Clear();
@@ -601,7 +601,6 @@ namespace RestaurantApp
                     border4.Child = grid4;
                     wrapPanelContent.Children.Add(border4);
                 }
-
                 else
                 {
                     var tableItem = new TextBlock
@@ -619,8 +618,29 @@ namespace RestaurantApp
                 }
             }
         }
+        #endregion
 
+        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var searchBox = sender as TextBox;
+            if (searchBox != null)
+            {
+                string searchText = searchBox.Text.ToLower();
 
+                foreach (var child in wrapPanelContent.Children)
+                {
+                    if (child is Border border && border.Child is Grid grid && grid.Children.Count > 0)
+                    {
+                        TextBlock textBlockTitle = grid.Children[0] as TextBlock;
+
+                        if (textBlockTitle != null && !textBlockTitle.Text.ToLower().Contains(searchText))
+                            border.Visibility = Visibility.Collapsed;
+                        else
+                            border.Visibility = Visibility.Visible;
+                    }
+                }
+            }
+        }
 
         private Brush GetTableColor(int statusId)
         {
